@@ -19,7 +19,7 @@ export class Spaceship {
   public loadModel(): void {
     this.gltfLoader.load("/spaceship.glb", (gltf: GLTF) => {
       this.model = gltf.scene;
-      this.model.scale.set(0.2, 0.2, 0.2);
+      this.model.scale.set(this.scale, this.scale, this.scale);
       this.scene.add(this.model);
     });
   }

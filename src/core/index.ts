@@ -7,10 +7,11 @@ import {
 } from "three";
 import { Spaceship } from "./spaceship";
 import { InputController } from "./inputController";
+import { StarField } from "./starField";
 
 export class App {
   private readonly canvas = document.getElementById(
-    "canvas"
+    'canvas'
   ) as HTMLCanvasElement;
   private readonly scene = new Scene();
   private readonly renderer = new WebGLRenderer({
@@ -25,6 +26,8 @@ export class App {
   );
   private readonly inputController = new InputController();
   private readonly spaceship = new Spaceship(this.scene, this.inputController, 0.2);
+
+  private readonly starField = new StarField(this.scene, 1500); // 500 estrellas, ajusta el número si quieres
 
   constructor() {
     this.crateInstances();
