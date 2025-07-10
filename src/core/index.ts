@@ -8,6 +8,7 @@ import {
 import { Spaceship } from "./spaceship";
 import { InputController } from "./inputController";
 import { StarField } from "./starField";
+import { CameraController } from "./cameraController";
 
 export class App {
   private readonly canvas = document.getElementById(
@@ -26,8 +27,9 @@ export class App {
   );
   private readonly inputController = new InputController();
   private readonly spaceship = new Spaceship(this.scene, this.inputController, 0.2);
+  private readonly cameraController = new CameraController(this.perspectiveCamera, this.spaceship);
 
-  private readonly starField = new StarField(this.scene, 1500); // 500 estrellas, ajusta el número si quieres
+  //private readonly starField = new StarField(this.scene, 1500); // 500 estrellas, ajusta el número si quieres
 
   constructor() {
     this.crateInstances();
@@ -38,6 +40,7 @@ export class App {
 
   private crateInstances(): void {
     this.spaceship.loadModel();
+    new StarField(this.scene); // se puede colocar aqui dentro del parentesois (this.scene , 1500) 1500 estrellas
   }
 
   private config(): void {
@@ -49,6 +52,7 @@ export class App {
   private animate(): void {
     this.renderer.render(this.scene, this.perspectiveCamera);
     this.spaceship.update();
+    this.cameraController.update();
     requestAnimationFrame(this.animate.bind(this));
   }
 

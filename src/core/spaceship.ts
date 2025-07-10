@@ -5,7 +5,7 @@ import type { InputController } from "./inputController";
 
 export class Spaceship {
   private readonly gltfLoader = new GLTFLoader();
-  private declare model: Object3D;
+  public declare model: Object3D;
   private readonly speed = 0.2;
   private readonly rotationSpeed = 0.05;
   
