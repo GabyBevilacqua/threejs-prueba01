@@ -9,6 +9,13 @@ import { Spaceship } from "./spaceship";
 import { InputController } from "./inputController";
 import { StarField } from "./starField";
 import { CameraController } from "./cameraController";
+import { JoystickController } from "./JoystickController";
+
+declare global {
+  interface Window {
+    joystickController: JoystickController;
+  }
+}
 
 export class App {
   private readonly canvas = document.getElementById(
@@ -25,6 +32,12 @@ export class App {
     0.1,
     1000
   );
+  // Instanciar el joystick primero
+  private readonly joystick = (() => {
+    // @ts-ignore
+    window.joystickController = new JoystickController();
+    return window.joystickController;
+  })();
   private readonly inputController = new InputController();
   private readonly spaceship = new Spaceship(this.scene, this.inputController, 0.2);
   private readonly cameraController = new CameraController(this.perspectiveCamera, this.spaceship);
@@ -36,6 +49,8 @@ export class App {
     this.config();
     this.createLights();
     this.animate();
+    window.addEventListener("resize", this.onResize.bind(this))
+    // El joystick ya se instancia antes de InputController
   }
 
   private crateInstances(): void {
@@ -62,5 +77,15 @@ export class App {
 
     const directionalLight = new DirectionalLight(0xffffff, 1);
     this.scene.add(directionalLight);
+  }
+
+  private onResize(): void {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.perspectiveCamera.aspect = window.innerWidth / window.innerHeight;
+    this.perspectiveCamera.updateProjectionMatrix();
+    // Ajustar el tamaño de la nave espacial proporcionalmente
+    const minDim = Math.min(window.innerWidth, window.innerHeight);
+    const newScale = minDim / 3000; // Puedes ajustar el divisor para el tamaño deseado
+    this.spaceship.setScale(newScale);
   }
 }

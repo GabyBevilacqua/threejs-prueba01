@@ -8,20 +8,29 @@ export class Spaceship {
   public declare model: Object3D;
   private readonly speed = 0.2;
   private readonly rotationSpeed = 0.05;
+  private scale: number;
   
-
   constructor(
     private readonly scene: Scene,
     private readonly inputController: InputController,
-    private readonly scale: number,
-  ) {}
+    scale: number,
+  ) {
+    this.scale = scale;
+  }
 
   public loadModel(): void {
     this.gltfLoader.load("/spaceship.glb", (gltf: GLTF) => {
       this.model = gltf.scene;
-      this.model.scale.set(this.scale, this.scale, this.scale);
+      this.setScale(this.scale);
       this.scene.add(this.model);
     });
+  }
+
+  public setScale(newScale: number): void {
+    this.scale = newScale;
+    if (this.model) {
+      this.model.scale.set(this.scale, this.scale, this.scale);
+    }
   }
 
   public update(): void {

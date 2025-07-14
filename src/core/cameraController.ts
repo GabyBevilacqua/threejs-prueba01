@@ -12,6 +12,11 @@ export class CameraController {
   public update(): void {
     if (!this.spaceship.model) return;
 
+    const rotateOffset = this.offset.clone().applyQuaternion(this.spaceship.model.quaternion);
+    const desiredPosition = this.spaceship.model.position.clone().add(rotateOffset);
+
+    this.perspectiveCamera.position.lerp(desiredPosition, 0.05);
+
     this.perspectiveCamera.lookAt(
       this.spaceship.model.position)
   }
