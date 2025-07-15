@@ -9,17 +9,17 @@ import { Spaceship } from "./spaceship";
 import { InputController } from "./inputController";
 import { StarField } from "./starField";
 import { CameraController } from "./cameraController";
-import { JoystickController } from "./JoystickController";
+//import { JoystickController } from "./JoystickController";
 
-declare global {
-  interface Window {
-    joystickController: JoystickController;
-  }
-}
+// declare global {
+//   interface Window {
+//     joystickController: JoystickController;
+//   }
+// }
 
 export class App {
   private readonly canvas = document.getElementById(
-    'canvas'
+    "canvas"
   ) as HTMLCanvasElement;
   private readonly scene = new Scene();
   private readonly renderer = new WebGLRenderer({
@@ -33,14 +33,21 @@ export class App {
     1000
   );
   // Instanciar el joystick primero
-  private readonly joystick = (() => {
-    // @ts-ignore
-    window.joystickController = new JoystickController();
-    return window.joystickController;
-  })();
+  // private readonly joystick = (() => {
+  //   // @ts-ignore
+  //   window.joystickController = new JoystickController();
+  //   return window.joystickController;
+  // })();
   private readonly inputController = new InputController();
-  private readonly spaceship = new Spaceship(this.scene, this.inputController, 0.2);
-  private readonly cameraController = new CameraController(this.perspectiveCamera, this.spaceship);
+  private readonly spaceship = new Spaceship(
+    this.scene,
+    this.inputController,
+    0.2
+  );
+  private readonly cameraController = new CameraController(
+    this.perspectiveCamera,
+    this.spaceship
+  );
 
   //private readonly starField = new StarField(this.scene, 1500); // 500 estrellas, ajusta el número si quieres
 
@@ -49,7 +56,7 @@ export class App {
     this.config();
     this.createLights();
     this.animate();
-    window.addEventListener("resize", this.onResize.bind(this))
+    window.addEventListener("resize", this.onResize.bind(this));
     // El joystick ya se instancia antes de InputController
   }
 
